@@ -19,7 +19,7 @@ services:
     environment:
       COMMENTS_API_URL: //comments-service.nicolasoga.com.ar
     env_file:
-      - google_keys.env
+      - .sensitive/google_keys.env
 
   comments_service:
     image: nicooga/comments_service
@@ -33,7 +33,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
     env_file:
-      - google_keys.env
+      - .sensitive/google_keys.env
 
   postgres:
     image: postgres:11.7

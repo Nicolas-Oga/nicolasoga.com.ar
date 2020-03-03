@@ -1,8 +1,8 @@
 #!/usr/bin/env sh
 docker-compose \
   --tlsverify \
-  --tlscacert="docker_machine_certs/ca.pem" \
-  --tlscert="docker_machine_certs/cert.pem" \
-  --tlskey="docker_machine_certs/key.pem" \
+  --tlscacert=".sensitive/ca.pem" \
+  --tlscert=".sensitive/cert.pem" \
+  --tlskey=".sensitive/key.pem" \
   -H=tcp://68.183.24.104:2376 \
   $@
