@@ -1,0 +1,45 @@
+version: '2'
+
+services:
+  reverse_proxy:
+    build: ./reverse_proxy
+    depends_on:
+      - comments_service
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /root/.caddy
+      - personal_site:/public
+
+  personal_site:
+    image: nicooga/personal_site
+    volumes:
+      - personal_site:/personal_site/dist
+    environment:
+      COMMENTS_API_URL: //comments-service.nicolasoga.com.ar
+      GOOGLE_API_KEY: AIzaSyDgg6gn42HuUx4GID9Rt4km7L5Wx8G4FZo
+      GOOGLE_CLIENT_ID: 785765963117-os8buvsss5ebhcbr5jbn64e2dvca34ug.apps.googleusercontent.com
+
+  comments_service:
+    image: nicooga/comments_service
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: production
+      DB_NAME: comments_service_production
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+
+  postgres:
+    image: postgres:11.7
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+volumes:
+  personal_site:
+  pgdata:

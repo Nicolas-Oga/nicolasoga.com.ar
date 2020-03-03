@@ -1,0 +1,10 @@
+nicolasoga.com.ar {
+  root * /public
+  file_server
+  encode gzip
+  try_files {path} index.html
+}
+
+http://comments-service.nicolasoga.com.ar {
+  reverse_proxy * comments_service:4000
+}
