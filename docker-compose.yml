@@ -18,8 +18,8 @@ services:
       - personal_site:/personal_site/dist
     environment:
       COMMENTS_API_URL: //comments-service.nicolasoga.com.ar
-      GOOGLE_API_KEY: AIzaSyDgg6gn42HuUx4GID9Rt4km7L5Wx8G4FZo
-      GOOGLE_CLIENT_ID: 785765963117-os8buvsss5ebhcbr5jbn64e2dvca34ug.apps.googleusercontent.com
+    env_file:
+      - google_keys.env
 
   comments_service:
     image: nicooga/comments_service
@@ -32,6 +32,8 @@ services:
       DB_PASSWORD: postgres
       DB_HOST: postgres
       DB_PORT: 5432
+    env_file:
+      - google_keys.env
 
   postgres:
     image: postgres:11.7

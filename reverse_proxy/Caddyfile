@@ -5,6 +5,6 @@ nicolasoga.com.ar {
   try_files {path} index.html
 }
 
-http://comments-service.nicolasoga.com.ar {
+comments-service.nicolasoga.com.ar {
   reverse_proxy * comments_service:4000
 }
