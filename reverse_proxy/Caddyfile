@@ -8,3 +8,14 @@ nicolasoga.com.ar {
 comments-service.nicolasoga.com.ar {
   reverse_proxy * comments_service:4000
 }
+
+pyros.nicolasoga.com.ar {
+  root * /pyramidal_app_front
+  file_server
+  encode gzip
+  try_files {path} index.html
+}
+
+pyros-platform.nicolasoga.com.ar {
+  reverse_proxy * pyramidal_app_platform:4000
+}

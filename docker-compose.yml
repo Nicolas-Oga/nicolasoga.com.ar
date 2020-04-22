@@ -9,9 +9,11 @@ services:
       - '80:80'
       - '443:443'
     volumes:
-      - /root/.caddy
+      - reverse_proxy_data:/data
       - personal_site:/public
+      - pyramidal_app_front_static:/pyramidal_app_front
 
+  # Personal serverd at nicolasoga.com.ar
   personal_site:
     image: nicooga/personal_site
     volumes:
@@ -21,6 +23,7 @@ services:
     env_file:
       - .sensitive/google_keys.env
 
+  # Comments service, served at comments-service.nicolasoga.com.ar
   comments_service:
     image: nicooga/comments_service
     depends_on:
@@ -35,6 +38,44 @@ services:
     env_file:
       - .sensitive/google_keys.env
 
+  # Pyramidal APP frontend, served at pyros.nicolasoga.com.ar
+  pyramidal_app_front:
+    image: pyramidal/front:latest
+    depends_on:
+      - pyramidal_app_platform
+    volumes:
+      - pyramidal_app_front_static:/pyramidal_app_front/dist/
+    environment:
+      PLATFORM_URL: 'https://pyros-platform.nicolasoga.com.ar'
+      PLATFORM_WS_URL: 'wss://pyros-platform.nicolasoga.com.ar/graphql'
+    env_file:
+      - .sensitive/pyramidal/front.env
+
+  # Pyramidal APP backend, served at pyramidal-api.nicolasoga.com.ar
+  pyramidal_app_platform:
+    image: pyramidal/platform
+    depends_on:
+      - postgres
+      - mongo
+    ports:
+      - '3456:443'
+    volumes:
+      - reverse_proxy_data:/mnt/reverse_proxy_data
+    environment:
+      AGENDA_MONGO_DB_URL: mongodb://mongo/agenda
+      DB_NAME: pyramidal_app_platform
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    env_file:
+      - .sensitive/pyramidal/platform.env
+
+  mongo:
+    image: mongo:3.6.17-xenial
+    volumes:
+      - mongodata:/data/db
+
   postgres:
     image: postgres:11.7
     volumes:
@@ -44,4 +85,7 @@ services:
 
 volumes:
   personal_site:
+  pyramidal_app_front_static:
   pgdata:
+  mongodata:
+  reverse_proxy_data:
