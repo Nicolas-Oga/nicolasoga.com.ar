@@ -23,3 +23,7 @@ comments-service.nicolasoga.com.ar {
 pgadmin.nicolasoga.com.ar {
   reverse_proxy * pgadmin:5050
 }
+
+prueba-teamknowlogy.nicolasoga.com.ar {
+  reverse_proxy * prueba_teamknowlogy:3000
+}

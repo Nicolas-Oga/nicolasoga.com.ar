@@ -94,6 +94,16 @@ services:
       PGADMIN_DEFAULT_EMAIL: 2112.oga@gmail.com
       PGADMIN_DEFAULT_PASSWORD: asdf2134
 
+  prueba_teamknowlogy:
+    build: prueba-teamknowlogy/backend
+    environment:
+      ASSET_HOST: https://prueba-teamknowlogy.nicolasoga.com.ar
+      MAILER_SMTP_HOST: smtp.gmail.com
+      MAILER_SMTP_PORT: 587
+      MAILER_DEFAULT_SENDER: 2112.oga@gmail.com
+    env_file:
+      - .sensitive/prueba_teamknowlogy/env
+
 volumes:
   personal_site:
   pyramidal_app_front_static:
