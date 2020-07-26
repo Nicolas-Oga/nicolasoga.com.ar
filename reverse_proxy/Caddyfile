@@ -9,13 +9,17 @@ comments-service.nicolasoga.com.ar {
   reverse_proxy * comments_service:4000
 }
 
-pyros.nicolasoga.com.ar {
+{$TELMMA_FRONT_DOMAIN} {
   root * /pyramidal_app_front
   file_server
   encode gzip
   try_files {path} index.html
 }
 
-pyros-platform.nicolasoga.com.ar {
-  reverse_proxy * pyramidal_app_platform:4000
+{$TELMMA_PLATFORM_DOMAIN} {
+  reverse_proxy * {$TELMMA_PLATFORM_CONTAINER}:4000
+}
+
+pgadmin.nicolasoga.com.ar {
+  reverse_proxy * pgadmin:5050
 }
